@@ -1,3 +1,97 @@
+.desktop {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: url("../src/assets/windows10Wallpaper.jpg") center/cover no-repeat;
+}
+.titleBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 45px;
+  /* background: #1f1f1f; */
+  background: blue;
+  color: white;
+  font-size: 13px;
+  font-family: "Segoe UI", sans-serif;
+  user-select: none;
+  -webkit-app-region: drag;
+}
+.titleBar::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: #3a3a3a;
+}
+.titleBar > div:first-child {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  font-weight: 500;
+  gap: 10px;
+}
+.titleBar > div:last-child {
+  display: flex;
+  flex-direction: row-reverse;
+}
+.window-button {
+  width: 45px;
+  height: 45px;
+  background: transparent;
+  border: none;
+  color: #ffffffcc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  transition: background 0.15s;
+}
+.window-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.window-button:first-child:hover {
+  background: #e81123;
+  color: white;
+}
+.window-button i {
+  pointer-events: none;
+}
+.window {
+  position: absolute;
+  background-color: #1e1e1e;
+  border: 1px solid #555;
+  width: 400px;
+  height: 300px;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: opacity 0.25s ease, transform 0.25s ease, width 0.25s ease,
+    height 0.25s ease;
+}
+.window.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.window.minimized {
+  transform: scale(0.8) translateY(100%);
+  opacity: 0;
+}
+
+.window.maximized {
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+}
+.content {
+  padding: 10px;
+  color: #ddd;
+}
 .taskbar {
   position: absolute;
   bottom: 0;
@@ -8,31 +102,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-.desktop {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  overflow: hidden;
-}
-.window {
-  position: absolute;
-  background-color: #1e1e1e;
-  border: 1px solid #555;
-  width: 400px;
-  height: 300px;
-  border-radius: 6px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-.titleBar {
-  background: linear-gradient(#3a3a3a, #2a2a2a);
-  padding: 5px 10px;
-  color: white;
-  cursor: move;
-}
-.content {
-  padding: 10px;
-  color: #ddd;
 }
 .start-button {
   background: transparent;
@@ -45,11 +114,9 @@
   align-items: center;
   justify-content: center;
 }
-
 .start-button:hover {
   background: #3a3a3a;
 }
-
 .win-logo {
   width: 20px;
   height: 20px;
