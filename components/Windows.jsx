@@ -1,70 +1,114 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
-export default function Windows({ title, icon, children }) {
+export default function Windows({
+  title,
+  icon,
+  children,
+  onMinimize,
+  onRestore,
+  onClose,
+  minimized,
+  visible,
+}) {
   const [pos, setPos] = useState({ x: 100, y: 100 });
+  const [size, setSize] = useState({ width: 400, height: 300 });
   const [dragging, setDragging] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [visible, setVisible] = useState(true);
-  const [minimized, setMinimized] = useState(false);
   const [maximized, setMaximized] = useState(false);
+  const [restoring, setRestoring] = useState(false);
 
-  function handleClose() {
-    setVisible(false);
-  }
-
-  function handleMinimize() {
-    setMinimized(true);
-  }
+  const windowRef = useRef(null);
+  const originalPos = useRef(pos);
+  const originalSize = useRef(size);
 
   function handleMaximize() {
-    setMaximized((prev) => !prev);
+    if (maximized) {
+      handleRestore();
+    } else {
+      originalPos.current = pos;
+      originalSize.current = size;
+      setMaximized(true);
+      setRestoring(false);
+    }
+  }
+
+  function handleRestore() {
+    if (minimized || maximized) {
+      setRestoring(true);
+
+      setTimeout(() => {
+        setMaximized(false);
+        setPos(originalPos.current);
+        setSize(originalSize.current);
+
+        setTimeout(() => setRestoring(false), 300);
+      }, 10);
+
+      if (onRestore) onRestore();
+    }
   }
 
   function startDrag(e) {
-    if (maximized) return;
+    if (maximized || minimized) return;
     setDragging(true);
     setOffset({ x: e.clientX - pos.x, y: e.clientY - pos.y });
   }
+
   function onDrag(e) {
-    if (dragging) setPos({ x: e.clientX - offset.x, y: e.clientY - offset.y });
+    if (dragging && !maximized && !minimized) {
+      setPos({ x: e.clientX - offset.x, y: e.clientY - offset.y });
+    }
   }
 
   function stopDrag() {
     setDragging(false);
   }
 
+  function handleTitleBarDoubleClick() {
+    if (maximized) {
+      handleRestore();
+    } else {
+      handleMaximize();
+    }
+  }
+
   if (!visible) return null;
 
-  let windowsStyle = {
+  const windowStyle = {
     top: pos.y,
     left: pos.x,
+    width: maximized ? "100vw" : `${size.width}px`,
+    height: maximized ? "calc(100vh - 40px)" : `${size.height}px`,
     position: "absolute",
+    zIndex: minimized ? -1 : 10,
   };
 
-  if (maximized) {
-    windowsStyle = {
-      ...windowsStyle,
-      top: 0,
-      left: 0,
-      width: "100vw",
-      height: "100vh",
-    };
-  }
+  const windowClasses = [
+    "window",
+    !visible && "hidden",
+    minimized && "minimized",
+    maximized && "maximized",
+    restoring && "restoring",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
-  if (minimized) {
-    windowsStyle.display = "none";
-  }
+  if (!visible) return null;
 
   return (
     <div
-      className={`window ${!visible ? "hidden" : ""} ${
-        minimized ? "minimized" : ""
-      } ${maximized ? "maximized" : ""}`}
+      ref={windowRef}
+      className={windowClasses}
       onMouseMove={onDrag}
       onMouseUp={stopDrag}
-      style={windowsStyle}
+      onMouseLeave={stopDrag}
+      style={windowStyle}
     >
-      <div className="titleBar" onMouseDown={startDrag}>
+      <div
+        className="titleBar"
+        onMouseDown={startDrag}
+        onDoubleClick={handleTitleBarDoubleClick}
+      >
         <div>
           {icon}
           {title}
@@ -72,7 +116,7 @@ export default function Windows({ title, icon, children }) {
         <div>
           <button
             className="window-button"
-            onClick={handleClose}
+            onClick={onClose}
             aria-label="Close"
           >
             <svg width="10" height="10">
@@ -97,23 +141,32 @@ export default function Windows({ title, icon, children }) {
           <button
             className="window-button"
             onClick={handleMaximize}
-            aria-label="Maximize"
+            aria-label={maximized ? "Restore" : "Maximize"}
           >
             <svg width="10" height="10">
-              <rect
-                x="1"
-                y="1"
-                width="8"
-                height="8"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-              />
+              {maximized ? (
+                <path
+                  d="M2,2 L8,2 L8,8 L2,8 Z M3,3 L7,3 L7,7 L3,7 Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                />
+              ) : (
+                <rect
+                  x="1"
+                  y="1"
+                  width="8"
+                  height="8"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                />
+              )}
             </svg>
           </button>
           <button
             className="window-button"
-            onClick={handleMinimize}
+            onClick={onMinimize}
             aria-label="Minimize"
           >
             <svg width="10" height="10">
