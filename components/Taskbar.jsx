@@ -49,7 +49,7 @@ export default function Taskbar({
         <div className="system-tray">
           <i className="fa-solid fa-volume-high"></i>
           <i className="fa-solid fa-wifi"></i>
-          <i class="fa-solid fa-battery-quarter"></i>
+          <i className="fa-solid fa-battery-quarter"></i>
         </div>
         <div className="taskbar-clock">{time}</div>
       </div>
