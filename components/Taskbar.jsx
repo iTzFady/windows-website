@@ -39,7 +39,6 @@ export default function Taskbar({
               onClick={() => onWindowClick(name)}
             >
               {win.icon}
-              {win.active && <div className="taskbar-indicator" />}
             </button>
           ))}
         </div>

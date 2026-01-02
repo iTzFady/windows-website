@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useMemo } from "react";
 import {
   FaUserCircle,
   FaPowerOff,
@@ -7,25 +7,13 @@ import {
   FaImage,
 } from "react-icons/fa";
 import { CiMenuBurger } from "react-icons/ci";
-
-const programs = [
-  { name: "Zoom", icon: <FaFolder /> },
-  { name: "Excel", icon: <FaFolder /> },
-  { name: "Word", icon: <FaFolder /> },
-  { name: "Photoshop", icon: <FaFolder /> },
-  { name: "Illustrator", icon: <FaFolder /> },
-  { name: "Chrome", icon: <FaFolder /> },
-  { name: "After Effects", icon: <FaFolder /> },
-  { name: "Premiere Pro", icon: <FaFolder /> },
-  { name: "Notepad", icon: <FaFolder /> },
-  { name: "Access", icon: <FaFolder /> },
-];
+import { PROGRAMS } from "../data/programs";
 
 function groupByFirstLetter(items) {
-  const sorted = [...items].sort((a, b) => a.name.localeCompare(b.name));
-  console.log(items);
+  const programs = Object.values(items);
+  const sorted = [...programs].sort((a, b) => a.title.localeCompare(b.title));
   return sorted.reduce((groups, item) => {
-    const letter = item.name[0].toUpperCase();
+    const letter = item.title[0].toUpperCase();
     if (!groups[letter]) {
       groups[letter] = [];
     }
@@ -34,13 +22,13 @@ function groupByFirstLetter(items) {
   }, {});
 }
 
-export default function StartMenu() {
+export default function StartMenu({ onLaunch }) {
   const [collapsed, setCollapsed] = useState(true);
-  const groupedPrograms = groupByFirstLetter(programs);
+  const groupedPrograms = useMemo(() => groupByFirstLetter(PROGRAMS), []);
 
   return (
     <div className="start-menu">
-      <div className={`start-left ${collapsed ? "collapsed" : ""}`}>
+      <div className={`start-left ${collapsed ? "" : "expanded"}`}>
         <div className="top-start">
           <button
             className="top-button"
@@ -72,9 +60,13 @@ export default function StartMenu() {
             <span>{letter}</span>
             <div className="program-list">
               {groupedPrograms[letter].map((program) => (
-                <div key={program.name} className="program-item">
-                  {program.icon && program.icon}
-                  <span>{program.name}</span>
+                <div
+                  key={program.id}
+                  className="program-item"
+                  onClick={() => onLaunch(program.id)}
+                >
+                  {program.icon}
+                  <span>{program.title}</span>
                 </div>
               ))}
             </div>

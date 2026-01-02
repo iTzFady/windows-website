@@ -9,6 +9,9 @@ export default function Windows({
   onClose,
   minimized,
   visible,
+  zIndex,
+  active,
+  onFocus,
 }) {
   const [pos, setPos] = useState({ x: 100, y: 100 });
   const [size, setSize] = useState({ width: 400, height: 300 });
@@ -80,7 +83,7 @@ export default function Windows({
     width: maximized ? "100vw" : `${size.width}px`,
     height: maximized ? "calc(100vh - 40px)" : `${size.height}px`,
     position: "absolute",
-    zIndex: minimized ? -1 : 10,
+    zIndex,
   };
 
   const windowClasses = [
@@ -98,7 +101,8 @@ export default function Windows({
   return (
     <div
       ref={windowRef}
-      className={windowClasses}
+      className={`${windowClasses} ${active ? "active" : ""}`}
+      onMouseDown={onFocus}
       onMouseMove={onDrag}
       onMouseUp={stopDrag}
       onMouseLeave={stopDrag}
