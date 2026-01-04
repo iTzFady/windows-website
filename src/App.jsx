@@ -10,6 +10,7 @@ import { PROGRAMS } from "../data/programs";
 import ContextMenu from "../components/ContextMenu";
 import BootScreen from "../components/BootScreen";
 import LoginScreen from "../components/LoginPage";
+import { AnimatePresence, motion } from "framer-motion";
 const SYSTEM_STATES = {
   BOOT: "boot",
   LOGIN: "login",
@@ -210,19 +211,43 @@ function App() {
       </Desktop>
     );
   };
-  if (systemState === SYSTEM_STATES.BOOT) {
-    return (
-      <BootScreen onComplete={() => setSystemState(SYSTEM_STATES.LOGIN)} />
-    );
-  }
+  return (
+    <AnimatePresence mode="wait">
+      {systemState === SYSTEM_STATES.BOOT && (
+        <motion.div
+          key="boot"
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <BootScreen onComplete={() => setSystemState(SYSTEM_STATES.LOGIN)} />
+        </motion.div>
+      )}
 
-  if (systemState === SYSTEM_STATES.LOGIN) {
-    return (
-      <LoginScreen onLogin={() => setSystemState(SYSTEM_STATES.DESKTOP)} />
-    );
-  }
+      {systemState === SYSTEM_STATES.LOGIN && (
+        <motion.div
+          key="login"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <LoginScreen onLogin={() => setSystemState(SYSTEM_STATES.DESKTOP)} />
+        </motion.div>
+      )}
 
-  return renderDesktop();
+      {systemState === SYSTEM_STATES.DESKTOP && (
+        <motion.div
+          key="desktop"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+        >
+          {renderDesktop()}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 }
 
 export default App;

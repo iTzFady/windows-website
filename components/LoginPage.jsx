@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+
 export default function LoginScreen({ onLogin }) {
   const [phase, setPhase] = useState("lock");
   const [unlocking, setUnlocking] = useState(false);
@@ -20,43 +22,40 @@ export default function LoginScreen({ onLogin }) {
     day: "numeric",
   });
 
-  function handleUnlock() {
-    setUnlocking(true);
-    setTimeout(() => setPhase("login"), 500);
-    setTimeout(() => setUnlocking(false), 600);
-  }
-  const loginScreen = () => {
-    return (
-      <div className="login-screen">
-        <div className="login-card">
-          <div className="avatar" />
-          <h2 className="username">Fady Samy</h2>
-          <button className="hint" onClick={onLogin}>
-            Sign in
-          </button>
-        </div>
-      </div>
-    );
-  };
-  const lockScreen = () => {
-    return (
-      <div
-        className={`lock-screen ${phase === "login" ? "hidden" : ""} ${
-          unlocking ? "unlocking" : ""
-        }`}
-        onClick={handleUnlock}
-      >
-        <div className="dateTime">
-          <div className="lock-time">{time}</div>
-          <div className="lock-date">{date}</div>
-        </div>
-      </div>
-    );
-  };
   return (
     <div className="lock-login-container">
-      {lockScreen()}
-      {phase === "login" && loginScreen()}
+      <AnimatePresence mode="wait">
+        {phase === "lock" && (
+          <motion.div
+            key="lock"
+            className="lock-screen"
+            onClick={() => setPhase("login")}
+            initial={{ y: 0, opacity: 1 }}
+            exit={{ y: "-100%", opacity: 0 }}
+          >
+            <div className="dateTime">
+              <div className="lock-time">{time}</div>
+              <div className="lock-date">{date}</div>
+            </div>
+          </motion.div>
+        )}
+        {phase === "login" && (
+          <motion.div
+            key="login"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="login-screen"
+          >
+            <div className="login-card">
+              <div className="avatar" />
+              <h2 className="username">Fady Samy</h2>
+              <button className="hint" onClick={onLogin}>
+                Sign in
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
