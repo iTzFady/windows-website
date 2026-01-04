@@ -9,6 +9,7 @@ import { DESKTOP_ICONS } from "../data/desktopIcons";
 import { PROGRAMS } from "../data/programs";
 import ContextMenu from "../components/ContextMenu";
 import BootScreen from "../components/BootScreen";
+import LoginScreen from "../components/LoginPage";
 const SYSTEM_STATES = {
   BOOT: "boot",
   LOGIN: "login",
@@ -139,7 +140,7 @@ function App() {
       console.log("Refreshed");
     }
   }
-  const desktop = () => {
+  const renderDesktop = () => {
     return (
       <Desktop
         onContextMenu={(e) => {
@@ -210,14 +211,18 @@ function App() {
     );
   };
   if (systemState === SYSTEM_STATES.BOOT) {
-    return <BootScreen />;
+    return (
+      <BootScreen onComplete={() => setSystemState(SYSTEM_STATES.LOGIN)} />
+    );
   }
 
   if (systemState === SYSTEM_STATES.LOGIN) {
-    return <div>Login Screen (not implemented)</div>;
+    return (
+      <LoginScreen onLogin={() => setSystemState(SYSTEM_STATES.DESKTOP)} />
+    );
   }
 
-  return desktop();
+  return renderDesktop();
 }
 
 export default App;

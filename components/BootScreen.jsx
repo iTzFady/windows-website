@@ -3,7 +3,7 @@ import WindowsLogo from "../src/assets/microsoft-windows-blue.svg";
 import LoadingSpinner from "../src/assets/Windows-loading-cargando.gif";
 export default function BootScreen({ onComplete }) {
   useEffect(() => {
-    const timer = setTimeout(onComplete, 3000);
+    const timer = setTimeout(onComplete, 6000);
     return () => clearTimeout(timer);
   }, [onComplete]);
 
