@@ -15,7 +15,11 @@ export default function DesktopIcon({
       onDoubleClick={onDoubleClick}
       tabIndex={0}
     >
-      <div className="desktop-icon-image">{icon}</div>
+      <img
+        className="desktop-icon-image"
+        src={icon}
+        alt={title}
+      />
       <div className="desktop-icon-title">{title}</div>
     </div>
   );

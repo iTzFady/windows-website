@@ -3,7 +3,8 @@
   height: 100vh;
   position: relative;
   overflow: hidden;
-  background: url("../src/assets/windows10Wallpaper.jpg") center/cover no-repeat;
+  background: url("../src/assets/windows10Wallpaper.webp") center/cover
+    no-repeat;
 }
 .titleBar {
   display: flex;
@@ -13,7 +14,6 @@
   background: #1f1f1f;
   color: white;
   font-size: 13px;
-  font-family: "Segoe UI", sans-serif;
   user-select: none;
   -webkit-app-region: drag;
 }
@@ -68,7 +68,11 @@
   height: 300px;
   border-radius: 6px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  transition: opacity 0.25s ease, transform 0.25s ease, width 0.25s ease,
+  z-index: 100;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    width 0.25s ease,
     height 0.25s ease;
 }
 .window.hidden {
@@ -96,12 +100,11 @@
   bottom: 0;
   width: 100%;
   height: 40px;
-  background-color: rgba(32, 32, 32, 0.95);
+  background-color: #000306;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: "Segoe UI", sans-serif;
   z-index: 1000;
   backdrop-filter: blur(10px);
 }
@@ -109,6 +112,22 @@
   display: flex;
   align-items: center;
   gap: 4px;
+}
+.search-input {
+  background: #333333;
+  border: none;
+  padding: 6px 10px;
+  font-size: 13px;
+  width: 250px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.search-input > input {
+  background: transparent;
+  border: none;
+  color: #dbdbdb;
 }
 .start-button {
   background: transparent;
@@ -119,15 +138,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: white;
 }
 .start-button:hover {
   background: #3a3a3a;
+  color: #429ce3 !important;
 }
 .win-logo {
   width: 20px;
   height: 20px;
   filter: brightness(1.2);
-  color: white;
 }
 .taskbar-apps {
   display: flex;
@@ -171,26 +191,36 @@
   opacity: 0.9;
 }
 
+.taskbar-language {
+  text-transform: uppercase;
+}
 .start-menu {
   position: absolute;
   bottom: 40px;
-  left: 6px;
+  width: 325px;
   height: 550px;
-  display: flex;
-  background-color: #202020f5;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
+  background: #202020;
   overflow: hidden;
-  box-shadow: 0 0 35px rgba(0, 0, 0, 0.8);
   animation: fadeInUp 0.25s ease;
-  font-family: "Segoe UI", sans-serif;
+  z-index: 10000000;
 }
 .start-left {
-  width: 38%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 60px;
+  background: #202020;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
   transition: width 0.25s ease;
+  z-index: 2;
+}
+.start-left.expanded {
+  width: 260px;
 }
 .top-start {
   display: flex;
@@ -264,16 +294,14 @@
 }
 
 .start-right {
+  margin-left: 60px;
+  height: 100%;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-width: 400px;
-  overflow-y: scroll;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
   color: #ffffffcc;
-  min-width: 250px;
-  padding: 10px 0px 0px 0px;
+  padding-top: 10px;
 }
 .start-right::-webkit-scrollbar {
   display: none;
@@ -318,27 +346,25 @@
 }
 .desktop-icon {
   position: absolute;
-  width: 96px;
-  height: 90px;
-  padding: 6px 4px;
+  width: 80px;
+  height: 80px;
+  padding: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-
-  font-family: "Segoe UI", system-ui, sans-serif;
+  justify-content: center;
+  z-index: 1;
   font-size: 12px;
   color: #ffffff;
-
   cursor: pointer;
   user-select: none;
   outline: none;
+  gap: 10px;
 }
 
 .desktop-icon-image {
-  width: 32px;
-  height: 32px;
-  margin-bottom: 6px;
+  width: 50px;
+  height: 50px;
 
   display: flex;
   align-items: center;
@@ -360,9 +386,9 @@
   word-break: break-word;
 }
 
-.desktop-icon.selected .desktop-icon-title {
-  background: rgba(0, 120, 215, 0.45);
-  outline: 1px solid rgba(0, 120, 215, 0.9);
+.desktop-icon.selected {
+  background: rgb(164 176 185 / 45%);
+  outline: 1px solid rgb(114 154 185 / 90%);
 }
 
 .desktop-icon:focus-visible .desktop-icon-title {
@@ -373,7 +399,6 @@
   background: #f2f2f2;
   color: #000;
   width: 240px;
-  font-family: "Segoe UI", system-ui, sans-serif;
   font-size: 13px;
   border: 1px solid #c8c8c8;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
@@ -408,6 +433,7 @@
 
 .boot-logo {
   width: 140px;
+  color: #429ce3;
 }
 
 .spinner {
@@ -436,7 +462,7 @@
 .login-screen {
   width: 100vw;
   height: 100vh;
-  background: url("../src/assets/login-wallpaper.jpg") center/cover no-repeat;
+  background: url("../src/assets/login-wallpaper.webp") center/cover no-repeat;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -461,10 +487,13 @@
 .hint {
   background: #fdfdfd1c;
   color: white;
-  border: none;
-  padding: 5px 25px;
+  border: 1px solid white;
+  padding: 14px 50px;
   font-size: 1rem;
   cursor: pointer;
+}
+.hint:hover {
+  background: #fdfdfd2e;
 }
 .login-card > h2 {
   font-weight: 200;
@@ -472,13 +501,13 @@
 .avatar {
   width: 180px;
   height: 180px;
-  background: url("../src/assets/avatar.jpg") center/cover no-repeat;
+  background: url("../src/assets/avatar.webp") center/cover no-repeat;
   border-radius: 50%;
   margin-bottom: 20px;
 }
 
 .lock-screen {
-  background: url(/src/assets/login-wallpaper.jpg) center / cover no-repeat;
+  background: url(/src/assets/login-wallpaper.webp) center / cover no-repeat;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -500,6 +529,7 @@
 .lock-time {
   font-size: 6rem;
   line-height: 0.9;
+  font-weight: 100;
 }
 
 .lock-date {

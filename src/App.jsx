@@ -32,9 +32,7 @@ function App() {
       minimized: false,
       active: true,
       zindex: 10,
-      icon: <i className="fa-solid fa-address-card"></i>,
-      title: "About Me",
-      content: <p>Hello, I'm Fady — a Web Developer.</p>,
+      ...PROGRAMS.about,
     },
   });
   useEffect(() => {
@@ -184,7 +182,6 @@ function App() {
               key={icon.programId}
               icon={program.icon}
               title={program.title}
-              x={icon.x}
               y={icon.y}
               selected={selectedIcon === icon.programId}
               onSelect={() => setSelectedIcon(icon.programId)}

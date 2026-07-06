@@ -11,11 +11,14 @@ export default function LoginScreen({ onLogin }) {
     return () => clearInterval(timer);
   }, []);
 
-  const time = dateTime.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
+  const time = dateTime
+    .toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    })
+    .replace("AM", "")
+    .replace("PM", "");
   const date = dateTime.toLocaleDateString([], {
     weekday: "long",
     month: "long",

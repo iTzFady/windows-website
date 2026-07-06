@@ -97,7 +97,6 @@ export default function Windows({
     .join(" ");
 
   if (!visible) return null;
-
   return (
     <div
       ref={windowRef}
@@ -114,7 +113,7 @@ export default function Windows({
         onDoubleClick={handleTitleBarDoubleClick}
       >
         <div>
-          {icon}
+          <img src={icon} alt={`${title} icon`} width={25} height={25} />
           {title}
         </div>
         <div>

@@ -65,7 +65,12 @@ export default function StartMenu({ onLaunch }) {
                   className="program-item"
                   onClick={() => onLaunch(program.id)}
                 >
-                  {program.icon}
+                  <img
+                    src={program.icon}
+                    alt={program.title}
+                    width={25}
+                    height={25}
+                  />
                   <span>{program.title}</span>
                 </div>
               ))}

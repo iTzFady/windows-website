@@ -1,10 +1,14 @@
 import { FaUser, FaFolder, FaTerminal } from "react-icons/fa";
+import thisPCIcon from "../src/assets/thispc.webp";
+import userIcon from "../src/assets/user.webp";
+import folderIcon from "../src/assets/folder.webp";
+import cmdIcon from "../src/assets/CMD.webp";
 
 export const PROGRAMS = {
   about: {
     id: "about",
-    title: "About Me",
-    icon: <FaUser />,
+    title: "Fady Samy",
+    icon: userIcon,
     defaultSize: { width: 420, height: 300 },
     content: (
       <div>
@@ -17,14 +21,20 @@ export const PROGRAMS = {
   projects: {
     id: "projects",
     title: "Projects",
-    icon: <FaFolder />,
+    icon: folderIcon,
     content: <div>My projects go here</div>,
   },
 
   terminal: {
     id: "terminal",
-    title: "Terminal",
-    icon: <FaTerminal />,
+    title: "Command prompt",
+    icon: cmdIcon,
     content: <div>Fake terminal coming soon</div>,
+  },
+  thispc: {
+    id: "thispc",
+    title: "This PC",
+    icon: thisPCIcon,
+    content: <div>My computer goes here</div>,
   },
 };

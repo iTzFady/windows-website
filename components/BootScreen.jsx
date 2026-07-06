@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import WindowsLogo from "../src/assets/microsoft-windows-blue.svg";
+import WindowsLogo from "../src/assets/microsoft-windows.svg?react";
 import LoadingSpinner from "../src/assets/Windows-loading-cargando.gif";
 export default function BootScreen({ onComplete }) {
   useEffect(() => {
@@ -9,7 +9,7 @@ export default function BootScreen({ onComplete }) {
 
   return (
     <div className="boot-screen">
-      <img src={WindowsLogo} className="boot-logo" />
+      <WindowsLogo className="boot-logo" />
       <img className="spinner" src={LoadingSpinner} />
     </div>
   );
